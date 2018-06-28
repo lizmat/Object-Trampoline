@@ -1,0 +1,25 @@
+{
+  "auth" : "cpan:ELIZABETH",
+  "authors" : [
+    "Elizabeth Mattijsen"
+  ],
+  "build-depends" : [ ],
+  "depends" : [
+    "InterceptAllMethods"
+  ],
+  "description" : "Port of Perl 5's Object::Trampoline 1.50.4",
+  "license" : "Artistic-2.0",
+  "name" : "Object::Trampoline",
+  "perl" : "6.c",
+  "provides" : {
+    "Object::Trampoline" : "lib/Object/Trampoline.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "https://github.com/lizmat/Object/Trampoline.git",
+  "tags" : [
+    "UTILS",
+    "CPAN5"
+  ],
+  "test-depends" : [ ],
+  "version" : "0.0.1"
+}
