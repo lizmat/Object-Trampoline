@@ -10,7 +10,7 @@ SYNOPSIS
 
     # direct object creation
     my $dbh = DBIish.connect( ... );
-    my $sth = $dbh.prepare( 'select foo from bar');
+    my $sth = $dbh.prepare( 'select foo from bar' );
 
     if $need-to-execute {
         $sth.execute; # execute
@@ -23,7 +23,7 @@ SYNOPSIS
     use Object::Trampoline;
      
     my $dbh = Object::Trampoline.connect( DBIish, ... );
-    my $sth = Object::Trampoline.prepare( $dbh, 'select foo from bar');
+    my $sth = Object::Trampoline.prepare( $dbh, 'select foo from bar' );
 
     if $need-to-execute {
         $sth.execute; # create $dbh, then $sth, then execute
@@ -32,12 +32,25 @@ SYNOPSIS
         say "no database handle opened or statement executed";
     }
 
+    # alternate setup way, more idiomatic Perl6
+    my $dbh = trampoline { DBIish.connect: ... }
+    my $sth = trampoline { $dbh.prepare: 'select foo from bar' }
+
 DESCRIPTION
 ===========
 
 There are times when constructing an object is expensive but you are not sure yet you are going to need it. In that case it can be handy to delay the creation of the object. But then your code may become much more complicated.
 
 This module allows you to transparently create an intermediate object that will perform the delayed creation of the original object when **any** method is called on it.
+
+The original Perl 5 was is to call **any** method on the `Object::Trampoline` class, with as the first parameter the object to call that method on when it needs to be created, and the other parameters the parameters to give to that method then.
+
+The alternate, more idiomatic Perl 6 way, is to call the `trampoline` subroutine with a code block that contains the code to be executed to create the final object.
+
+PORTING CAVEATS
+===============
+
+Due to the lexical scope of `use` in Perl 6, it is not really possible to mimic the behaviour of `Object::Trampoline::Use`.
 
 AUTHOR
 ======
