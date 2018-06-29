@@ -1,6 +1,8 @@
 Revision history for Object-Trampoline
 
 {{$NEXT}}
+
+0.0.2  2018-06-29T10:51:33+02:00
     - Added "trampoline" sub for more Perl 6 idiomatic setup
     - Made sure multiple threads can realize the object without racing
 
