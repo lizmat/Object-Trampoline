@@ -1,6 +1,8 @@
 Revision history for Object-Trampoline
 
 {{$NEXT}}
+
+0.0.3  2018-07-04T14:20:35+02:00
     - .defined/.Bool can be called without realizing the object
 
 0.0.2  2018-06-29T10:51:33+02:00
