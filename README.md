@@ -31,6 +31,7 @@ SYNOPSIS
     else {
         say "no database handle opened or statement executed";
     }
+    LEAVE .disconnect with $dbh;  # only disconnects if connection was made
 
     # alternate setup way, more idiomatic Perl6
     my $dbh = trampoline { DBIish.connect: ... }
@@ -46,6 +47,8 @@ This module allows you to transparently create an intermediate object that will 
 The original Perl 5 was is to call **any** method on the `Object::Trampoline` class, with as the first parameter the object to call that method on when it needs to be created, and the other parameters the parameters to give to that method then.
 
 The alternate, more idiomatic Perl 6 way, is to call the `trampoline` subroutine with a code block that contains the code to be executed to create the final object.
+
+To make it easier to check whether the actual object has been created, you can check for `.defined` or booleaness of the object without actually creating the object. This can e.g. be used when wanting to disconnect a database handle upon exiting a scope, but only if an actual connection has been made (to prevent it from making the connection only to be able to disconnect it).
 
 PORTING CAVEATS
 ===============

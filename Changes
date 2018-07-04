@@ -1,6 +1,7 @@
 Revision history for Object-Trampoline
 
 {{$NEXT}}
+    - .defined/.Bool can be called without realizing the object
 
 0.0.2  2018-06-29T10:51:33+02:00
     - Added "trampoline" sub for more Perl 6 idiomatic setup

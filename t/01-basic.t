@@ -2,7 +2,7 @@ use v6.c;
 use Test;
 use Object::Trampoline;
 
-plan 16;
+plan 18;
 
 my @seen;
 
@@ -22,6 +22,8 @@ my $foo = Object::Trampoline.new: Foo;
 use nqp;
 ok nqp::eqaddr($foo.WHAT,Object::Trampoline),
   'did we get an Object::Trampoline';
+nok $foo.defined, 'is $foo marked as undefined';
+nok ?$foo, 'is $foo marked as False';
 
 is +@seen, 0, 'no Foo object created yet';
 

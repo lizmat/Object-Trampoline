@@ -2,7 +2,7 @@ use v6.c;
 
 use InterceptAllMethods;
 
-class Object::Trampoline:ver<0.0.2>:auth<cpan:ELIZABETH> {
+class Object::Trampoline:ver<0.0.3>:auth<cpan:ELIZABETH> {
     has &!code;    # code to get object, if that still needs to be done
     has $!lock;    # lock to make sure only one thread gets to create object
     has $!result;  # result of final method call (in case multi-threaded)
@@ -11,6 +11,7 @@ class Object::Trampoline:ver<0.0.2>:auth<cpan:ELIZABETH> {
     # object of the method that will actually be called.
     method ^find_method(Mu \type, Str:D $name) {
         my constant &proto-handler = proto method handler(|) {*}
+
 
         # Set up instantiated Object::Trampoline object that contains the
         # original object, the name of the method to call, and any arguments.
@@ -24,12 +25,21 @@ class Object::Trampoline:ver<0.0.2>:auth<cpan:ELIZABETH> {
         # return its result.  Make sure only on thread gets to do this at any
         # time.
         multi method handler(Object::Trampoline:D \SELF: |args) is raw {
-            $!lock.protect: {
-                if &!code {
-                    $!result := (SELF = &!code())."$name"(|args);
-                    &!code := Callable;
+
+            # special case for "if" and "with" constructs
+            if $name eq 'defined' || $name eq 'Bool' {
+                False
+            }
+
+            # do the real thing
+            else {
+                $!lock.protect: {
+                    if &!code {
+                        $!result := (SELF = &!code())."$name"(|args);
+                        &!code := Callable;
+                    }
+                    $!result
                 }
-                $!result
             }
         }
 
@@ -88,6 +98,7 @@ Object::Trampoline - Port of Perl 5's Object::Trampoline 1.50.4
     else {
         say "no database handle opened or statement executed";
     }
+    LEAVE .disconnect with $dbh;  # only disconnects if connection was made
 
     # alternate setup way, more idiomatic Perl6
     my $dbh = trampoline { DBIish.connect: ... }
@@ -111,6 +122,13 @@ that method then.
 The alternate, more idiomatic Perl 6 way, is to call the C<trampoline>
 subroutine with a code block that contains the code to be executed to create
 the final object.
+
+To make it easier to check whether the actual object has been created, you
+can check for C<.defined> or booleaness of the object without actually
+creating the object.  This can e.g. be used when wanting to disconnect a
+database handle upon exiting a scope, but only if an actual connection has
+been made (to prevent it from making the connection only to be able to
+disconnect it).
 
 =head1 PORTING CAVEATS
 
