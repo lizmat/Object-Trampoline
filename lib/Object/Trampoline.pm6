@@ -2,8 +2,8 @@ use v6.c;
 
 use InterceptAllMethods;
 
-class Object::Trampoline:ver<0.0.3>:auth<cpan:ELIZABETH> {
-    has &!code;    # code to get object, if that still needs to be done
+class Object::Trampoline:ver<0.0.4>:auth<cpan:ELIZABETH> {
+    has $!code;    # code to get object, if that still needs to be done
     has $!lock;    # lock to make sure only one thread gets to create object
     has $!result;  # result of final method call (in case multi-threaded)
 
@@ -11,7 +11,6 @@ class Object::Trampoline:ver<0.0.3>:auth<cpan:ELIZABETH> {
     # object of the method that will actually be called.
     method ^find_method(Mu \type, Str:D $name) {
         my constant &proto-handler = proto method handler(|) {*}
-
 
         # Set up instantiated Object::Trampoline object that contains the
         # original object, the name of the method to call, and any arguments.
@@ -34,9 +33,17 @@ class Object::Trampoline:ver<0.0.3>:auth<cpan:ELIZABETH> {
             # do the real thing
             else {
                 $!lock.protect: {
-                    if &!code {
-                        $!result := (SELF = &!code())."$name"(|args);
-                        &!code := Callable;
+                    if $!code {
+                        my $object := $!code();  # run code to create object
+
+                        # Alas, we need to revert to nqp to prevent method
+                        # .STORE being called on the object, which would send
+                        # this off into an infiniloop.
+                        use nqp;
+                        nqp::assign(SELF,$object) if nqp::iscont(SELF);
+
+                        $!result := $object."$name"(|args);  # create result
+                        $!code := Mu;                        # run code once
                     }
                     $!result
                 }
@@ -58,7 +65,7 @@ my sub trampoline(&code) is export {
       nqp::p6bindattrinvres(
         nqp::create(Object::Trampoline),
         Object::Trampoline,
-        '&!code',
+        '$!code',
         &code
       ),
       Object::Trampoline,

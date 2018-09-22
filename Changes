@@ -2,6 +2,10 @@ Revision history for Object-Trampoline
 
 {{$NEXT}}
 
+0.0.4  2018-09-22T17:55:03+02:00
+    - Fixed various infinilooping issues, with .sink and .STORE
+    - Fixed issue with code not being reset
+
 0.0.3  2018-07-04T14:20:35+02:00
     - .defined/.Bool can be called without realizing the object
 
