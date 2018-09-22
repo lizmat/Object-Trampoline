@@ -2,10 +2,10 @@ use v6.c;
 
 use InterceptAllMethods;
 
-class Object::Trampoline:ver<0.0.4>:auth<cpan:ELIZABETH> {
-    has $!code;    # code to get object, if that still needs to be done
-    has $!lock;    # lock to make sure only one thread gets to create object
-    has $!result;  # result of final method call (in case multi-threaded)
+class Object::Trampoline:ver<0.0.5>:auth<cpan:ELIZABETH> {
+    has Mu   $!code;  # code to get object, if that still needs to be done
+    has Lock $!lock;  # lock to make sure only one thread gets to create object
+    has Mu $!result;  # result of final method call (in case multi-threaded)
 
     # ALL method calls will call this method, which will return a Method
     # object of the method that will actually be called.
@@ -111,6 +111,13 @@ Object::Trampoline - Port of Perl 5's Object::Trampoline 1.50.4
     my $dbh = trampoline { DBIish.connect: ... }
     my $sth = trampoline { $dbh.prepare: 'select foo from bar' }
 
+    # lazy default values for attributes in objects
+    class Foo {
+        has $.bar = trampoline { say "delayed init"; "bar" }
+    }
+    my $foo = Foo.new;
+    say $foo.bar;  # delayed init; bar
+
 =head1 DESCRIPTION
 
 There are times when constructing an object is expensive but you are not sure
@@ -128,7 +135,8 @@ that method then.
 
 The alternate, more idiomatic Perl 6 way, is to call the C<trampoline>
 subroutine with a code block that contains the code to be executed to create
-the final object.
+the final object.  This can also be used to serve as a lazy default value
+for a class attribute.
 
 To make it easier to check whether the actual object has been created, you
 can check for C<.defined> or booleaness of the object without actually
