@@ -2,6 +2,9 @@ Revision history for Object-Trampoline
 
 {{$NEXT}}
 
+0.0.6  2018-12-09T19:55:45+01:00
+    - Mention that we can't smartmatch or use .WHAT.
+
 0.0.5  2018-09-22T22:30:31+02:00
     - Finally got trampoline to work with class attributes
 

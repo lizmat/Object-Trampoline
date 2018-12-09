@@ -2,7 +2,7 @@ use v6.c;
 
 use InterceptAllMethods;
 
-class Object::Trampoline:ver<0.0.5>:auth<cpan:ELIZABETH> {
+class Object::Trampoline:ver<0.0.6>:auth<cpan:ELIZABETH> {
     has Mu   $!code;  # code to get object, if that still needs to be done
     has Lock $!lock;  # lock to make sure only one thread gets to create object
     has Mu $!result;  # result of final method call (in case multi-threaded)
@@ -149,6 +149,15 @@ disconnect it).
 
 Due to the lexical scope of C<use> in Perl 6, it is not really possible to
 mimic the behaviour of C<Object::Trampoline::Use>.
+
+Due to the nature of the implementation, it is not possible to use smartmatch
+(aka C<~~>) on a trampolined object.  This is because smartmatching a
+trampolined object does not call any methods on it.  Fixing that by using a
+C<Proxy> would break the C<.defined> and C<.Bool> functionality.
+
+You can also not call C<.WHAT> on a trampolined object.  This is because
+C<.WHAT> is internally generated as a call to C<nqp::what>, and it is as yet
+impossible to provide candidates for nqp:: ops.
 
 =head1 AUTHOR
 

@@ -62,6 +62,10 @@ PORTING CAVEATS
 
 Due to the lexical scope of `use` in Perl 6, it is not really possible to mimic the behaviour of `Object::Trampoline::Use`.
 
+Due to the nature of the implementation, it is not possible to use smartmatch (aka `~~`) on a trampolined object. This is because smartmatching a trampolined object does not call any methods on it. Fixing that by using a `Proxy` would break the `.defined` and `.Bool` functionality.
+
+You can also not call `.WHAT` on a trampolined object. This is because `.WHAT` is internally generated as a call to `nqp::what`, and it is as yet impossible to provide candidates for nqp:: ops.
+
 AUTHOR
 ======
 
