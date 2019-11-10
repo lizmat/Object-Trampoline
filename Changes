@@ -2,6 +2,9 @@ Revision history for Object-Trampoline
 
 {{$NEXT}}
 
+0.0.7  2019-11-10T13:40:15+01:00
+    - changed Perl 6 to Raku, and Perl 5 to Perl
+
 0.0.6  2018-12-09T19:55:45+01:00
     - Mention that we can't smartmatch or use .WHAT.
 

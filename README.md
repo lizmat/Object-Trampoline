@@ -1,9 +1,7 @@
-[![Build Status](https://travis-ci.org/lizmat/Object-Trampoline.svg?branch=master)](https://travis-ci.org/lizmat/Object-Trampoline)
-
 NAME
 ====
 
-Object::Trampoline - Port of Perl 5's Object::Trampoline 1.50.4
+Object::Trampoline - Port of Perl's Object::Trampoline 1.50.4
 
 SYNOPSIS
 ========
@@ -33,7 +31,7 @@ SYNOPSIS
     }
     LEAVE .disconnect with $dbh;  # only disconnects if connection was made
 
-    # alternate setup way, more idiomatic Perl6
+    # alternate setup way, more idiomatic Raku
     my $dbh = trampoline { DBIish.connect: ... }
     my $sth = trampoline { $dbh.prepare: 'select foo from bar' }
 
@@ -51,16 +49,16 @@ There are times when constructing an object is expensive but you are not sure ye
 
 This module allows you to transparently create an intermediate object that will perform the delayed creation of the original object when **any** method is called on it.
 
-The original Perl 5 was is to call **any** method on the `Object::Trampoline` class, with as the first parameter the object to call that method on when it needs to be created, and the other parameters the parameters to give to that method then.
+The original Perl was is to call **any** method on the `Object::Trampoline` class, with as the first parameter the object to call that method on when it needs to be created, and the other parameters the parameters to give to that method then.
 
-The alternate, more idiomatic Perl 6 way, is to call the `trampoline` subroutine with a code block that contains the code to be executed to create the final object. This can also be used to serve as a lazy default value for a class attribute.
+The alternate, more idiomatic Raku way, is to call the `trampoline` subroutine with a code block that contains the code to be executed to create the final object. This can also be used to serve as a lazy default value for a class attribute.
 
 To make it easier to check whether the actual object has been created, you can check for `.defined` or booleaness of the object without actually creating the object. This can e.g. be used when wanting to disconnect a database handle upon exiting a scope, but only if an actual connection has been made (to prevent it from making the connection only to be able to disconnect it).
 
 PORTING CAVEATS
 ===============
 
-Due to the lexical scope of `use` in Perl 6, it is not really possible to mimic the behaviour of `Object::Trampoline::Use`.
+Due to the lexical scope of `use` in Raku, it is not really possible to mimic the behaviour of `Object::Trampoline::Use`.
 
 Due to the nature of the implementation, it is not possible to use smartmatch (aka `~~`) on a trampolined object. This is because smartmatching a trampolined object does not call any methods on it. Fixing that by using a `Proxy` would break the `.defined` and `.Bool` functionality.
 
@@ -76,9 +74,9 @@ Source can be located at: https://github.com/lizmat/Object-Trampoline . Comments
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2018 Elizabeth Mattijsen
+Copyright 2018-2019 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
-Re-imagined from the Perl 5 version as part of the CPAN Butterfly Plan. Perl 5 version originally developed by Steven Lembark.
+Re-imagined from the Perl version as part of the CPAN Butterfly Plan. Perl version originally developed by Steven Lembark.
 
