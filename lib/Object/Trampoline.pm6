@@ -2,7 +2,7 @@ use v6.c;
 
 use InterceptAllMethods;
 
-class Object::Trampoline:ver<0.0.7>:auth<cpan:ELIZABETH> {
+class Object::Trampoline:ver<0.0.8>:auth<cpan:ELIZABETH> {
     has Mu   $!code;  # code to get object, if that still needs to be done
     has Lock $!lock;  # lock to make sure only one thread gets to create object
     has Mu $!result;  # result of final method call (in case multi-threaded)
@@ -21,7 +21,7 @@ class Object::Trampoline:ver<0.0.7>:auth<cpan:ELIZABETH> {
         # Take the instantiated Object::Trampoline object, call the originally
         # intended method on the original object and store that as the new
         # object.  Then call the given method and arguments on that object and
-        # return its result.  Make sure only on thread gets to do this at any
+        # return its result.  Make sure only one thread gets to do this at any
         # time.
         multi method handler(Object::Trampoline:D \SELF: |args) is raw {
 
@@ -45,7 +45,9 @@ class Object::Trampoline:ver<0.0.7>:auth<cpan:ELIZABETH> {
                         $!result := $object."$name"(|args);  # create result
                         $!code := Mu;                        # run code once
                     }
-                    $!result
+                    # earlier versions of Lock.protect de-containerized.
+                    # fixes https://github.com/lizmat/Object-Delayed/issues/5
+                    return-rw $!result
                 }
             }
         }
@@ -55,7 +57,7 @@ class Object::Trampoline:ver<0.0.7>:auth<cpan:ELIZABETH> {
     }
 }
 
-my sub trampoline(&code) is export {
+my sub trampoline(&code) is raw is export {
 
     # Alas, we need to revert to nqp methods to be able to create the
     # Object::Trampoline object, as all normal logic is inaccessible due
