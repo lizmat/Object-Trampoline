@@ -2,6 +2,12 @@ Revision history for Object-Trampoline
 
 {{$NEXT}}
 
+0.0.9  2020-11-12T20:28:46+01:00
+    - Change name of distribution
+    - Force to highest possible Raku version
+    - Update copyright year
+    - Tighten up dependency on InterceptAllMethods
+
 0.0.8  2020-02-16T14:17:23+01:00
     - Made sure that we don't decont the trampolined value
 

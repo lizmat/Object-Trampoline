@@ -1,25 +1,28 @@
 {
-  "auth" : "cpan:ELIZABETH",
-  "authors" : [
+  "auth": "cpan:ELIZABETH",
+  "authors": [
     "Elizabeth Mattijsen"
   ],
-  "build-depends" : [ ],
-  "depends" : [
-    "InterceptAllMethods"
+  "build-depends": [
   ],
-  "description" : "Port of Perl's Object::Trampoline 1.50.4",
-  "license" : "Artistic-2.0",
-  "name" : "Object::Trampoline",
-  "perl" : "6.c",
-  "provides" : {
-    "Object::Trampoline" : "lib/Object/Trampoline.pm6"
+  "depends": [
+    "InterceptAllMethods:ver<0.0.1>:auth<cpan:ELIZABETH>"
+  ],
+  "description": "Raku port of Perl's Object::Trampoline module 1.50.4",
+  "license": "Artistic-2.0",
+  "name": "Object::Trampoline",
+  "perl": "6.c",
+  "provides": {
+    "Object::Trampoline": "lib/Object/Trampoline.pm6"
   },
-  "resources" : [ ],
-  "source-url" : "https://github.com/lizmat/Object/Trampoline.git",
-  "tags" : [
+  "resources": [
+  ],
+  "source-url": "https://github.com/lizmat/Object/Trampoline.git",
+  "tags": [
     "UTILS",
     "CPAN5"
   ],
-  "test-depends" : [ ],
-  "version" : "0.0.8"
+  "test-depends": [
+  ],
+  "version": "0.0.9"
 }

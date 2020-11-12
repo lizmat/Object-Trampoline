@@ -1,7 +1,7 @@
 NAME
 ====
 
-Object::Trampoline - Port of Perl's Object::Trampoline 1.50.4
+Raku port of Perl's Object::Trampoline module 1.50.4
 
 SYNOPSIS
 ========
@@ -45,6 +45,8 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
+This module tries to mimic the behaviour of Perl's `Object::Trampolinee` module as closely as possible in the Raku Programming Language.
+
 There are times when constructing an object is expensive but you are not sure yet you are going to need it. In that case it can be handy to delay the creation of the object. But then your code may become much more complicated.
 
 This module allows you to transparently create an intermediate object that will perform the delayed creation of the original object when **any** method is called on it.
@@ -74,7 +76,7 @@ Source can be located at: https://github.com/lizmat/Object-Trampoline . Comments
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2018-2019 Elizabeth Mattijsen
+Copyright 2018,2019,2020 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

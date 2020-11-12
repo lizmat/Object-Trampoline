@@ -1,8 +1,8 @@
-use v6.c;
+use v6.*;
 
-use InterceptAllMethods;
+use InterceptAllMethods:ver<0.0.1>:auth<cpan:ELIZABETH>;
 
-class Object::Trampoline:ver<0.0.8>:auth<cpan:ELIZABETH> {
+class Object::Trampoline:ver<0.0.9>:auth<cpan:ELIZABETH> {
     has Mu   $!code;  # code to get object, if that still needs to be done
     has Lock $!lock;  # lock to make sure only one thread gets to create object
     has Mu $!result;  # result of final method call (in case multi-threaded)
@@ -80,7 +80,7 @@ my sub trampoline(&code) is raw is export {
 
 =head1 NAME
 
-Object::Trampoline - Port of Perl's Object::Trampoline 1.50.4
+Raku port of Perl's Object::Trampoline module 1.50.4
 
 =head1 SYNOPSIS
 
@@ -121,6 +121,9 @@ Object::Trampoline - Port of Perl's Object::Trampoline 1.50.4
     say $foo.bar;  # delayed init; bar
 
 =head1 DESCRIPTION
+
+This module tries to mimic the behaviour of Perl's C<Object::Trampolinee>
+module as closely as possible in the Raku Programming Language.
 
 There are times when constructing an object is expensive but you are not sure
 yet you are going to need it.  In that case it can be handy to delay the
@@ -178,3 +181,5 @@ Re-imagined from the Perl version as part of the CPAN Butterfly Plan. Perl
 version originally developed by Steven Lembark.
 
 =end pod
+
+# vim: expandtab shiftwidth=4

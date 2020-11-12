@@ -1,4 +1,4 @@
-use v6.c;
+use v6.*;
 use Test;
 use Object::Trampoline;
 
@@ -53,4 +53,4 @@ isa-ok $foo, Foo, 'do we have a Foo object again';
 isa-ok $bar, Bar, 'do we have a Bar object';
 is @seen, "Foo Foo Foo Bar", 'did we not create any real object again';
 
-# vim: ft=perl6 expandtab sw=4
+# vim: expandtab shiftwidth=4
