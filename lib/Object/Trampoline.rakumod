@@ -1,8 +1,8 @@
 use v6.*;
 
-use InterceptAllMethods:ver<0.0.1>:auth<cpan:ELIZABETH>;
+use InterceptAllMethods:ver<0.0.2>:auth<zef:lizmat>;
 
-class Object::Trampoline:ver<0.0.9>:auth<cpan:ELIZABETH> {
+class Object::Trampoline:ver<0.0.10>:auth<zef:lizmat> {
     has Mu   $!code;  # code to get object, if that still needs to be done
     has Lock $!lock;  # lock to make sure only one thread gets to create object
     has Mu $!result;  # result of final method call (in case multi-threaded)
@@ -166,14 +166,14 @@ impossible to provide candidates for nqp:: ops.
 
 =head1 AUTHOR
 
-Elizabeth Mattijsen <liz@wenzperl.nl>
+Elizabeth Mattijsen <liz@raku.rocks>
 
 Source can be located at: https://github.com/lizmat/Object-Trampoline .
 Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018,2019,2020 Elizabeth Mattijsen
+Copyright 2018, 2019, 2020, 2021 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
