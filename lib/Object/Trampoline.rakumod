@@ -2,7 +2,7 @@ use v6.*;
 
 use InterceptAllMethods:ver<0.0.2>:auth<zef:lizmat>;
 
-class Object::Trampoline:ver<0.0.10>:auth<zef:lizmat> {
+class Object::Trampoline:ver<0.0.11>:auth<zef:lizmat> {
     has Mu   $!code;  # code to get object, if that still needs to be done
     has Lock $!lock;  # lock to make sure only one thread gets to create object
     has Mu $!result;  # result of final method call (in case multi-threaded)
