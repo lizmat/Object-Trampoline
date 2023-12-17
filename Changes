@@ -2,6 +2,13 @@ Revision history for Object-Trampoline
 
 {{$NEXT}}
 
+0.0.12  2023-12-17T17:08:00+01:00
+    - Up dependency on InterceptAllMethods
+    - Make compatible with 2023.12
+    - Update copyright year
+    - Add sponsor link
+    - Change extension of test-files to .rakutest
+
 0.0.11  2021-10-01T10:39:03+02:00
     - Fix source URL in met, JRaspass++
 

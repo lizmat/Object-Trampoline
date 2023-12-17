@@ -1,8 +1,8 @@
 use v6.*;
 
-use InterceptAllMethods:ver<0.0.2>:auth<zef:lizmat>;
+use InterceptAllMethods:ver<0.0.3>:auth<zef:lizmat>;
 
-class Object::Trampoline:ver<0.0.11>:auth<zef:lizmat> {
+class Object::Trampoline {
     has Mu   $!code;  # code to get object, if that still needs to be done
     has Lock $!lock;  # lock to make sure only one thread gets to create object
     has Mu $!result;  # result of final method call (in case multi-threaded)
@@ -10,6 +10,10 @@ class Object::Trampoline:ver<0.0.11>:auth<zef:lizmat> {
     # ALL method calls will call this method, which will return a Method
     # object of the method that will actually be called.
     method ^find_method(Mu \type, Str:D $name) {
+        # needed since 2023.12
+        return my method is-generic(--> False) { } if $name eq 'is-generic';
+
+        # What we're going to return in the end
         my constant &proto-handler = proto method handler(|) {*}
 
         # Set up instantiated Object::Trampoline object that contains the
@@ -24,7 +28,6 @@ class Object::Trampoline:ver<0.0.11>:auth<zef:lizmat> {
         # return its result.  Make sure only one thread gets to do this at any
         # time.
         multi method handler(Object::Trampoline:D \SELF: |args) is raw {
-
             # special case for "if" and "with" constructs
             if $name eq 'defined' || $name eq 'Bool' {
                 False
@@ -171,9 +174,13 @@ Elizabeth Mattijsen <liz@raku.rocks>
 Source can be located at: https://github.com/lizmat/Object-Trampoline .
 Comments and Pull Requests are welcome.
 
+If you like this module, or what I’m doing more generally, committing to a
+L<small sponsorship|https://github.com/sponsors/lizmat/>  would mean a great
+deal to me!
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018, 2019, 2020, 2021 Elizabeth Mattijsen
+Copyright 2018, 2019, 2020, 2021, 2023 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
