@@ -1,5 +1,3 @@
-use v6.*;
-
 use InterceptAllMethods:ver<0.0.3>:auth<zef:lizmat>;
 
 class Object::Trampoline {
